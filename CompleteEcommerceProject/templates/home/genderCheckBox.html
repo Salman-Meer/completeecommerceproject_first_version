@@ -1,0 +1,48 @@
+<html>
+    <body>
+<p style="font-weight: bold; font-size: 20px;"><input type="checkbox" id="genderCheckBox{{g.g_id}}" {% if  request.session.gender %} {% if g.g_id ==  request.session.gender %} checked {% endif %} {% endif %} value="{{g.g_id}}">{{g.g_name}}</p>
+<br>
+
+    </body>
+    {% if priceRange %}
+
+
+    <script>
+
+        PCheckBox=document.getElementById('genderCheckBox{{g.g_id}}');
+        PCheckBox.addEventListener('change',(event)=>
+    {
+    //const selectedCategory=event.target.value;
+    
+    //const childCategory=document.getElementById('p_ctgry');
+    //value=childCategory.value;
+    if(document.getElementById('genderCheckBox{{g.g_id}}').checked){
+    window.location.href=window.location.pathname+`?PriceRange={{priceRange}}&gender=`+document.getElementById('genderCheckBox{{g.g_id}}').value;
+    
+    }
+    //window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`;
+    
+    });
+    </script>
+
+    {% else %}
+
+<script>
+
+    PCheckBox=document.getElementById('genderCheckBox{{g.g_id}}');
+    PCheckBox.addEventListener('change',(event)=>
+{
+//const selectedCategory=event.target.value;
+
+//const childCategory=document.getElementById('p_ctgry');
+//value=childCategory.value;
+if(document.getElementById('genderCheckBox{{g.g_id}}').checked){
+window.location.href=window.location.pathname+`?gender=`+document.getElementById('genderCheckBox{{g.g_id}}').value;
+
+}
+//window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`;
+
+});
+</script>
+{% endif %}
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    {% extends 'base/base.html' %}
+    {% block start %}
+    
+    {% include 'products/menus/menus.html' %}
+    <script>
+        
+        imageBoxId=1;
+    
+    </script>
+    <form action="{% url 'update_product' slug  %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      
+    <div class="container">
+        <div class="row">
+           
+<!---child categories-->
+{% for product in products %}
+            <div class="col-md-6 col-sm-12">
+                Product Name:
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <input type="text" value="{{product.p_name}}" name="product_name" class="form-control">
+            </div>
+            {% if error.product_name %}
+            
+            <div class="col-md-6 col-sm-12">
+            </div>
+            <div class="col-md-6 col-sm-12">
+            <p style="color: red;">{{error.product_name}}</p>
+             </div>
+            {%endif%}
+            <div class="col-md-6 col-sm-12">
+                Price:
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <input type="number" value="{{product.p_price}}"   name="product_price"  class="form-control">
+            </div>
+            {% if error.price %}
+            <div class="col-md-6 col-sm-12">
+            </div>
+            <div class="col-md-6 col-sm-12">
+            <p style="color: red;">{{error.price}}</p>
+             </div>
+            {%endif%}
+
+            <div class="col-md-6 col-sm-12">
+               Product Compony:
+            </div>
+           
+            <div class="col-md-6 col-sm-12">
+                <input type="text" value="{{product.p_compony}}"  name="product_company"  class="form-control">
+            </div>
+            {% if error.company %}
+            <div class="col-md-6 col-sm-12">
+            </div>
+            <div class="col-md-6 col-sm-12">
+            <p style="color: red;">{{error.company}}</p>
+            </div>
+            {%endif%}
+            
+            <div class="col-md-6 col-sm-12">
+                Description:
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <textarea class="form-control" name="product_description" > {{product.p_description}}  </textarea>
+            </div>
+
+           
+
+            <div class="col-md-6 col-sm-12">
+                Gender
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <input type="radio" {% if gender == 1 %} checked="checked" {% endif %}   value="1" name="Gender" id=""> Male 
+                <input type="radio" {% if gender == 2 %} checked {% endif %}  value="2" name="Gender" id=""> FeMale 
+                <input type="radio" value="3"  {% if gender == 3 %} checked {% endif %}  name="Gender" id=""> Others 
+            </div>
+
+            
+            <div class="col-md-6 col-sm-12">
+                Colors :
+            </div>
+            
+            <div class = "col-md-6 col-sm-12">
+                <select multiple name="product_colors"  class="form-control" id="">
+                     
+                    {% for color in colorsV %}<!--outer-->
+                    
+                    {% if color.id in colorlist %}<!--inner-->
+                        
+                    <option value="{{color.id}}" selected>{{color.color_name}}</option>
+                    {% else %}
+                    
+                    <option value="{{color.id}}">{{color.color_name}}</option>
+                    {% endif %}<!--inner-->
+                      {% endfor %}<!--inner-->
+                       
+                    
+
+                </select>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                Size :
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <select multiple name="product_sizes" class="form-control" id="">
+                    
+                    {% for size in sizesV %}
+                  
+                    {% if size.id in sizelist %}<!--inner-->
+                        
+                    <option value="{{size.id}}" selected>{{size.size_name}}</option>
+                    {% else %}
+                    
+                    <option value="{{size.id}}">{{size.size_name}}</option>
+                    {% endif %}<!--inner-->
+                      {% endfor %}<!--inner-->
+                       
+                    
+
+                </select>
+            </div>
+
+            
+
+           
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6"></div>
+                <input type="submit" class="btn btn-success" style="width: 100%;" value="Save">
+            </div>
+        </div>
+        <hr>
+        <hr>
+        </div>
+{% endfor %}
+
+        </div>
+
+
+
+    </div>
+    </form>
+    
+    
+
+    {% endblock %}
+
+  
+</body>
+</html>

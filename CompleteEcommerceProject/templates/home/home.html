@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+</head>
+    {% extends "base/base.html" %}
+    {% block start %}
+    
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+
+        #image-container-toogle img
+        {
+            display: none;
+        }
+
+        #image-container-toogle img.active
+        {
+            display: block;
+        }
+
+        #horse-left-image-container-toogle img
+        {
+            display: none;
+        }
+
+        #horse-left-image-container-toogle img.active
+        {
+            display: block;
+        }
+
+    </style>
+    {% if messages %}
+    <div>
+        {% include 'base/alert.html' %}
+    </div>
+{% endif %}
+    <body>
+        <div class="container-fluid" style="background-color: rgb(252, 186, 99);">
+            <div class="row">
+
+                <div class="container">
+                    
+                    
+                    <div class="row">
+                        <div class="col-2" id="horse-left-image-container-toogle">
+                            <img src="/static/img/horse1.png" class="active" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse2.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse3.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse4.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse5.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse6.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse7.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse8.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse9.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse10.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+                            <img src="/static/img/horse11.png" style="height: 100px; width: 100px; position: relative;top: 70px; left: 30px;" alt="">
+         
+
+                        </div>
+                        <div class="col-6" id="image-container-toogle">
+    <img src="/static/img/logo.png" class="active" style="height: 150px; width: 700px; margin-bottom: 0px; position: relative;top: 50px;" alt="">
+    <img src="/static/img/logo1.png" style="height: 150px; width: 700px; margin-bottom: 0px; position: relative;top: 50px;" alt="">
+    <img src="/static/img/logo2.png" style="height: 150px;  width: 700px; margin-bottom: 0px; position: relative;top: 50px;" alt="">
+    <img src="/static/img/logo3.png" style="height: 150px;  width: 700px; margin-bottom: 0px; position: relative;top: 50px;" alt="">
+    <img src="/static/img/logo4.png" style="height: 150px;  width: 700px;  margin-bottom: 0px; position: relative;top: 50px;" alt="">
+    <img src="/static/img/logo5.png" style="height: 150px;  width: 700px; margin-bottom: 0px; position: relative;top: 50px;" alt="">
+    <img src="/static/img/logo6.png" style="height: 150px;  width: 700px; margin-bottom: 0px; position: relative;top: 50px;" alt="">
+   
+</div>
+    <div class="col-3" style="position: relative; right:80px;">
+    </div>
+</div>
+              
+    <div class="row">
+
+        <div class="col-md-9 col-sm-6"></div>
+        <div class="col-md-3 col-sm-6" style="position: relative ; bottom: 80px;">
+            {% include 'home/login_sigin_buttons.html' %}
+        </div>
+
+    </div> 
+</div>  
+      <section class=" container-fluid" id="new">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2">
+                    
+                  
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <p style="font-weight: bold; font-size: 25px; color: rgb(56, 41, 41);"> range {{max_price}}</p>
+                                {% for price in pricelist %}
+                                {% include 'home/PriceCheckBox.html' %}
+                                {% endfor %}
+                            </div>
+                            <div class="col-6">
+                                <p style="font-weight: bold; font-size: 25px; color: rgb(56, 41, 41);"> gender </p>
+                                <p style="font-weight: bold; font-size: 20px;"><input type="checkbox" id="genderAll"  {% if not  request.session.gender or priceRange is -1  %} checked {% endif %} value="-1">all</p>
+
+                                {% for g in genders %}
+                                
+
+                                {% include 'home/genderCheckBox.html' %}
+                                {% endfor %}
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <div class="container-fluid">
+                        <div class="row">
+                            {% for product in serviceData %}
+                            
+                            <div class="col-md-4 col-sm-12">
+                                <a href="{% url 'products_detail' product.slug %}"><!--url 'products' product.slug                  it was in href in project of gupta project-->
+                                <div class="new__container">
+                                    <div class="swiper new-swiper">
+                                        <div class="swiper-wrapper">
+                                            <article class="new__card swiper-slide">
+                                                <span class="new__tag">New</span>
+                                                <img src="/media/images/{{product.p_image.first.image}}" alt="" class="new__img">
+                                                <div class="new__data">
+                                                    <h3 class="new__title">company : {{product.p_compony}}</h3>
+                                                    <span class="new__price">Rs.{{product.p_price}}</span>
+                                                </div>
+                                                
+                                                    
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                            </a>
+                        </div>
+                        {% endfor %}
+
+            
+            </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+    </section>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <center>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if priceRange %}
+
+
+                        {% if serviceData.has_previous %}
+                    
+                      <li class="page-item"><a class="page-link" href="/?page=1&PriceRange={{priceRange}}" style=" width: 100px; height: 50px;">first</a></li>
+                      <li class="page-item"><a class="page-link" href="/?page={{serviceData.previous_page_number}}&PriceRange={{priceRange}}" style=" width: 100px; height: 50px;">Previous</a></li>
+                      {% endif %}
+                      {%for n in totalPagelist %}
+                      {% if page_no == n %}
+                      <li class="page-item"><a class="page-link" href="/?page={{n}}&PriceRange={{priceRange}}" style=" max-width: 50px; height: 50px; background-color: rgb(50, 20, 99);">{{n}}</a></li>
+                
+                      {% else %} 
+                      <li class="page-item"><a class="page-link" href="/?page={{n}}&PriceRange={{priceRange}}" style=" max-width: 50px; height: 50px;">{{n}}</a></li>
+                      
+                      {% endif %}
+                
+                {% endfor %}
+                   
+                    
+                      {% if serviceData.has_next %}
+                    
+                      <li class="page-item"><a class="page-link" href="/?page={{serviceData.next_page_number}}&PriceRange={{priceRange}}" style=" width: 100px; height: 50px;">Next</a></li>
+                      <li class="page-item"><a class="page-link" href="/?page={{lastpage}}&PriceRange={{priceRange}}" style=" width: 100px; height: 50px;">last</a></li>
+                    
+                      {% endif %}
+
+                        {% else %}
+                        {% if serviceData.has_previous %}
+                    
+                      <li class="page-item"><a class="page-link" href="/?page=1" style=" width: 100px; height: 50px;">first</a></li>
+                      <li class="page-item"><a class="page-link" href="/?page={{serviceData.previous_page_number}}" style=" width: 100px; height: 50px;">Previous</a></li>
+                      {% endif %}
+                      {%for n in totalPagelist %}
+                      {% if page_no == n %}
+                      <li class="page-item"><a class="page-link" href="/?page={{n}}" style=" max-width: 50px; height: 50px; background-color: rgb(41, 23, 103);">{{n}}</a></li>
+                
+                      {% else %} 
+                      <li class="page-item"><a class="page-link" href="/?page={{n}}" style=" max-width: 50px; height: 50px;">{{n}}</a></li>
+                      
+                      {% endif %}
+                
+                {% endfor %}
+                   
+                    
+                      {% if serviceData.has_next %}
+                    
+                      <li class="page-item"><a class="page-link" href="/?page={{serviceData.next_page_number}}" style=" width: 100px; height: 50px;">Next</a></li>
+                      <li class="page-item"><a class="page-link" href="/?page={{lastpage}}" style=" width: 100px; height: 50px;">last</a></li>
+                    
+                      {% endif %}
+                      {% endif %}
+                    </ul>
+                  </nav>
+                </center>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+
+<script>
+    const images=document.querySelectorAll('#image-container-toogle img');
+    let currentIndex=0;
+    function toggleImages()
+    {
+        images[currentIndex].classList.remove('active');
+        
+
+        currentIndex=(currentIndex+1)%images.length;
+        images[currentIndex].classList.add('active');
+    }
+    setInterval(toggleImages,500);//2000 means two seconds,2000 meanse two seconds ,100 meanse 1/10 seconds
+    
+    const images_horse_left=document.querySelectorAll('#horse-left-image-container-toogle img');
+    let currentIndexHorseLeft=0;
+    function toggleImagesHorseLeft()
+    {
+        images_horse_left[currentIndexHorseLeft].classList.remove('active');
+        currentIndexHorseLeft=(currentIndexHorseLeft+1)%images_horse_left.length;
+        images_horse_left[currentIndexHorseLeft].classList.add('active');
+    }
+    setInterval(toggleImagesHorseLeft,50);//2000 means two seconds,2000 meanse two seconds ,100 meanse 1/10 seconds
+   //-------------------------------------------------------------
+    
+
+
+</script>
+
+{% if priceRange %}
+
+
+<script>
+
+    genderAll=document.getElementById('genderAll');
+    genderAll.addEventListener('change',(event)=>
+{
+//const selectedCategory=event.target.value;
+
+//const childCategory=document.getElementById('p_ctgry');
+//value=childCategory.value;
+if(document.getElementById('genderAll').checked){
+window.location.href=window.location.pathname+`?PriceRange={{priceRange}}&gender=-1`;
+
+}
+//window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`;
+
+});
+</script>
+
+{% else %}
+
+<script>
+
+genderAll=document.getElementById('genderAll');
+genderAll.addEventListener('change',(event)=>
+{
+//const selectedCategory=event.target.value;
+
+//const childCategory=document.getElementById('p_ctgry');
+//value=childCategory.value;
+if(document.getElementById('genderAll').checked){
+window.location.href=window.location.pathname+`?gender=-1`;
+
+}
+//window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`;
+
+});
+</script>
+{% endif %}
+    {% endblock %}
+   
+
+</html>

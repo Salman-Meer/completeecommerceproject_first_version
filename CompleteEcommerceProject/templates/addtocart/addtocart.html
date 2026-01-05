@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: block;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.cart-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+}
+
+/* Title */
+.cart-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Table Styles */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.cart-table th, .cart-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.cart-table th {
+    background: #f4f4f4;
+    font-size: 14px;
+}
+
+.cart-table td img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.item-details {
+    display: flex;
+    align-items: center;
+}
+
+.item-details p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.item-details small {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Input and Buttons */
+.cart-table input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.remove-btn {
+    background: #ff4c4c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 16px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background: #e64545;
+}
+
+.update-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.update-btn:hover {
+    background: #0056b3;
+}
+
+/* Summary Section */
+.cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cart-summary h3 {
+    color: #333;
+}
+
+/* Actions */
+.cart-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-actions textarea {
+    width: 60%;
+    height: 80px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.cart-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.shopping-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.shopping-btn:hover {
+    background: #5a6268;
+}
+
+.checkout-btn {
+    background: #28a745;
+    color: white;
+    margin-left: 10px;
+}
+
+.checkout-btn:hover {
+    background: #218838;
+}
+.plusbutton,.minusbutton{
+    height: 40px; 
+    background-color: white; 
+    font-size: 55px; 
+    font-weight: bold;
+
+    color: #218838;
+}
+.plusbutton:hover,.minusbutton:hover{
+    color: rgb(25, 25, 255);
+}
+
+
+
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    {% extends "base/base.html" %}
+    {% block start %}
+    {% if messages %}
+            <div>
+                {% include 'base/alert.html' %}
+            </div>
+      {% endif %}
+      <div class="container">
+        <div class="row">
+            <div class="col">
+
+                
+    <div class="cart-container">
+        <h1>Shopping Cart</h1>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Image</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>increase/decrease</th>
+                    <th>deleter</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in card_data %}
+                <tr>
+                    <td>{{product.c_product.p_name}}</td>
+                    <td>{{product.c_product.p_price}}</td>
+                    <td>{{product.quantity}}</td>
+                    <td>
+                        <div class="item-details">
+                            <img src="/media/images/{{product.c_product.p_image.first.image}}" alt="{{product.c_product.p_name}} image">
+                            
+                        </div>
+                    </td>
+                    <td>{{product.c_size_variant.size_name}}</td>
+                    <td>{{product.c_color_variant.color_name}}</td>
+                    <td> {% include 'addtocart/increase_decreaseButtons.html' %}</td>
+                    <td><a href="{% url 'delete_card' product.c_id %}"><button class="remove-btn">&times;</button></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="cart-summary">
+            <button class="update-btn">Update</button>
+            <h3>Total: Rs. {{total}}</h3>
+        </div>
+
+        <div class="cart-actions">
+            <textarea placeholder="Add a note for this seller..."></textarea>
+            <div>
+                <button class="shopping-btn">Continue Shopping</button>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+            </div>
+      </div>
+    </div>    {% endblock %}
+</body>
+</html>

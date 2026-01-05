@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+    {% extends "base/base.html" %}
+    {% block start %}
+
+    {% include 'products/menus/menus.html' %}
+      <!--==================== NEW ====================-->
+      
+      <section class="new section container" id="new">
+
+        <form action="" class="newsletter__subscribe" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                    </div>
+                </div>
+            </div>
+            
+            
+            <form action="" class="newsletter__subscribe">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            
+                         <input type="text" placeholder="Search from here" class="form-control">
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <input type="text" placeholder="Search from here" class="form-control"></div>
+                    </div>
+                    <div class="col-12">
+                        <center>
+                            <button class="button" type="submit">
+                                SEARCH
+                            </button>
+                        </center>
+                    </div>
+                </div>
+                
+                
+            </form>
+            <button class="button">
+                Save
+            </button>
+        </form>
+
+
+    </section>
+
+
+    {% endblock %}
+   
+</body>
+</html>
+

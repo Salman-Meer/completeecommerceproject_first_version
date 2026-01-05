@@ -1,0 +1,171 @@
+ <!DOCTYPE html>
+    <html lang="en">
+        
+    <head>
+        
+        <title>sulli.com</title>
+        <link rel="stylesheet" href="/static/css/bootstrap.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+        <!--=============== SWIPER CSS ===============--> 
+        <link rel="stylesheet" href="/static/css/swiper-bundle.min.css">
+        
+        <!--=============== CSS ===============-->
+        <link rel="stylesheet" href="/static/css/styles.css">
+    <div>
+        <section class="newsletter section container" style="width: 100%; margin-top: -120px;">
+            <div class="newsletter__bg grid" style="height:70px ;">
+                <div style="width:50%; position: relative; right: 15%;bottom: 20px;">
+                    <div class="nav__menu" id="nav-menu">
+                        <ul class="nav__list">
+                            <li class="nav__item">
+                                <a href="{% url 'home' %}" class="nav__link"><b>Home</b></a>
+                            </li>
+                            
+                            {% if user.is_superuser %}
+
+                            <li class="nav__item">
+                                <a href="#products" class="nav__link">Product List</a>
+                            </li>
+                            <li class="nav__item">
+                                <a href="{% url 'manipulation' %}" class="nav__link">Admin Manipulations</a>
+                            </li>
+                            {% endif %} 
+                            <li class="nav__item">
+                                <a href="#featured" class="nav__link">Featured</a>
+                            </li>
+                            {% if user.id is not None %} 
+                            {% if request.session.NumberOfCartItems is not 0 %}
+                            <li class="nav__item">
+                                
+                              <b style="position: relative; left: 16px; top: 20px;">{{request.session.NumberOfCartItems}}</b> 
+                                <a href="{% url 'AtToCard' %}" class="nav__link"><p style=" font-size: 50px;">🛒</p></a>
+                            </li>
+                            {% endif %}
+                            {% endif %}
+                        </ul>
+    
+                        
+                    </div>
+    
+                </div>
+
+                <form  action="{% url 'search' %}" method="post" class="newsletter__subscribe" style="position: relative; bottom: 50%">
+                   {% csrf_token %}
+                    <input type="text" {% if request.session.search %} value="{{request.session.search}}" {% endif %} name="search" placeholder="Search products from here" class="newsletter__input">
+                    <input type="submit" class="button" value="SEARCH">
+                        
+            
+                </form>
+            </div>
+        </section>
+       
+    </div>
+   
+
+
+   <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% if categories %}
+
+            <span style="font-size: 25px; font-weight: bold ;">Categories:</span>&ThickSpace;&ThickSpace;&ThickSpace;
+           {% endif %}
+            {% for category in categories %}
+            {% if category_id == category.p_c_id %}
+
+           <a href="{% url 'category_data' category.p_c_id %}"><span style="font-size: 20px; font-weight: bold; color: red;">{{category.p_c_name}}</span></a>&ThickSpace;&ThickSpace;&ThickSpace;
+           {% else %}
+           <a href="{% url 'category_data' category.p_c_id %}"><span style="font-size: 20px; font-weight: bold;">{{category.p_c_name}}</span></a>&ThickSpace;&ThickSpace;&ThickSpace;
+          
+           {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+<div>
+    </div>
+    
+    {% block start %}
+
+{% endblock %}
+<footer class="footer section">
+    <div class="footer__container container grid">
+        <div class="footer__content">
+            <h3 class="footer__title">Our information</h3>
+
+            <ul class="footer__list">
+                <li>1234 - Peru</li>
+                <li>La Libertad 43210</li>
+                <li>123-456-789</li>
+            </ul>
+        </div>
+        <div class="footer__content">
+            <h3 class="footer__title">About Us</h3>
+
+            <ul class="footer__links">
+                <li>
+                    <a href="#" class="footer__link">Support Center</a>
+                </li>
+                <li>
+                    <a href="#" class="footer__link">Customer Support</a>
+                </li>
+                <li>
+                    <a href="#" class="footer__link">About Us</a>
+                </li>
+                <li>
+                    <a href="#" class="footer__link">Copy Right</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="footer__content">
+            <h3 class="footer__title">Product</h3>
+
+            <ul class="footer__links">
+                <li>
+                    <a href="{% url 'check_session' %}" class="footer__link">session set or not</a>
+                </li>
+                <li>
+                    <a href="#" class="footer__link">Mountain bikes</a>
+                </li>
+                <li>
+                    <a href="#" class="footer__link">Electric</a>
+                </li>
+                <li>
+                    <a href="#" class="footer__link">Accesories</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="footer__content">
+            <h3 class="footer__title">Social</h3>
+
+            <ul class="footer__social">
+                <a href="https://www.facebook.com/" target="_blank" class="footer__social-link">
+                    <i class='bx bxl-facebook'></i>
+                </a>
+
+                <a href="https://twitter.com/" target="_blank" class="footer__social-link">
+                    <i class='bx bxl-twitter' ></i>
+                </a>
+
+                <a href="https://www.instagram.com/" target="_blank" class="footer__social-link">
+                    <i class='bx bxl-instagram' ></i>
+                </a>
+            </ul>
+        </div>
+    </div>
+
+    <span class="footer__copy">&#169; Bedimcode. All rigths reserved</span>
+</footer>
+</div>
+
+</html>
+
+<!---->
+
+
+
+

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body>
+   {% extends 'base/base.html' %} 
+
+   {% block start %}
+   <br>
+   {% if messages %}
+   <div>
+       {% include 'base/alert.html' %}
+   </div>
+{% endif %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                
+                <div class="row">
+                    <div class="col-12">
+                      {{product.p_description}}
+                    </div>
+                    <div class="col-12">
+                        <form action="{% url 'AtToCard' %}" method="post">
+                                {% csrf_token %}
+                                
+                        <div class="home__data">
+                            <h1 class="home__title">{{product.product_name}}</h1>
+                            <p class="home__description">
+                                {{product.product_description}}
+                            </p>
+                                <input type="hidden" name="slug" value="{{product.slug}}">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {% if product.size_variant %}
+                                        SELECT <b>Sizes</b>:
+                                        {% for size in product.size_variant.all %}
+                                        <input type="radio" name="size" id="size" value="{{size.size_name}}"  onchange="get_correct_price_by_size()"  {% if selected_size == size.size_name %} checked="" {% endif %}> :<b>{{size.size_name}}</b> 
+                                        {% endfor %}
+                                        {% endif %}
+                                        <br>
+                                        {% if product.color_variant %}
+                                        SELECT <b>Colors</b>
+                                        {% for color in product.color_variant.all%}
+                                        <input type="radio" id="color" name="color" value="{{color.color_name}}" onchange="get_correct_price_by_color()"  {% if selected_color == color.color_name %} checked=""  {% endif %}> :<b>{{color.color_name}}</b> 
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                               {% include 'products/quantity.html' %}
+                               SELECT <b>Quantity</b>
+                             
+                            <div class="home__btns">
+                                <a href="#" class="button button--gray button--small">
+                                    Discover
+                                </a>
+                               <a href="{% url 'AtToCard' %}"> <button type="submit" class="button home__button">ADD TO CART</button></a>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                
+
+
+                        <div class="container">
+                            <div class="row " >
+                                <div class="col-12" style="float: left;">   
+                                <center>  
+                                    {% for images in product.p_image.all %}
+                                    <img src="/media/images/{{images.image}}" style="width: 200px;" alt="" class="home__img">
+                                    {% endfor %}
+                                </center> 
+                            </div>
+                        </div>
+
+                    </div>
+                    </form>
+                </div>
+               </div>
+            </div>
+            
+            <div class="col-6" style="background-color: antiquewhite;">
+                <br><br><br><br><br>
+                <div class="home__img-bg">
+                    <img src="/media/images/{{product.p_image.first.image}}" style="max-height: 540px;" alt="" class="home__img">
+                </div>
+                <div class="row">
+                <div class="col-3"></div>
+
+                <div class="col-6"> <center> {% if selected_price %}
+                    <span class="home__price"><h1>RS {{selected_price}}</h1> </span>
+                    {% else %}
+                    <span class="home__price"><h1>RS {{product.p_price}}</h1></span>
+                    {% endif %}
+                </center> 
+                 </div>
+                 <div class="col-3"></div>
+                </div>
+            </div>
+
+    </div><!--outer -->
+    
+    
+    <hr>
+    <p style=" color: rgba(86, 61, 61, 0.781); font-weight: bold;">related products</p>            
+    <hr>
+</div><!--outer container-->
+<div class="container" style="background-color: rgb(252, 186, 99);">
+    <div class="row">
+
+          {% for product in related_products %}
+
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'products_detail' product.slug %}"><!--url 'products' product.slug it was in href in project of gupta project-->
+            <div class="new__container">
+                <div class="swiper new-swiper">
+                    <div class="swiper-wrapper">
+                        <article class="new__card swiper-slide">
+                            <span class="new__tag">New</span>
+                            <img src="/media/images/{{product.p_image.first.image}}" alt="" class="new__img">
+                            <div class="new__data">
+                                <h3 class="new__title">{{product.p_name}}</h3>
+                                <span class="new__price">{{product.p_price}}</span>
+                            </div>
+
+                        </article>
+                    </div>
+                </div>
+            </div>
+        
+        </a>
+        </div>
+        {% endfor %}
+        <div style=" height: 20px;"></div>
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-2"></div>
+                <div class="col-4">
+                    <center>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            {% if related_products.has_previous %}
+                        
+                          <li class="page-item"><a class="page-link" href="?page=1" style=" width: 100px; height: 50px;">first</a></li>
+                          <li class="page-item"><a class="page-link" href="?page={{related_products.previous_page_number}}" style=" width: 100px; height: 50px;">Previous</a></li>
+                          {% endif %}
+                          {%for n in totalPagelist %}
+                          {% if page_no == n %}
+                          <li class="page-item"><a class="page-link" href="?page={{n}}" style=" max-width: 50px; height: 50px; background-color: red;">{{n}}</a></li>
+                    
+                          {% else %} 
+                          <li class="page-item"><a class="page-link" href="?page={{n}}" style=" max-width: 50px; height: 50px;">{{n}}</a></li>
+                          
+                          {% endif %}
+                    
+                    {% endfor %}
+                        
+                        
+                          {% if related_products.has_next %}
+                        
+                          <li class="page-item"><a class="page-link" href="?page={{related_products.next_page_number}}" style=" width: 100px; height: 50px;">Next</a></li>
+                          <li class="page-item"><a class="page-link" href="?page={{lastpage}}" style=" width: 100px; height: 50px;">last</a></li>
+                        
+                          {% endif %}
+                        </ul>
+                      </nav>
+                    </center>
+                </div>
+                <div class="col-4"></div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script>
+
+        function get_correct_price_by_size(){
+          //  console.log(size)
+          //console.log(window.location.pathname)-> product/<slug>
+           // console.log(window.location.pathname+`?size=${size}`)
+            const c=document.getElementsByName('color')
+            let selected_color=''
+            for (var color of c){
+                if (color.checked==true) {
+                    selected_color = color.value;
+                    break;
+                }
+            
+            }
+            console.log(selected_color)
+         
+        
+           const size=event.target.value;
+          window.location.href=window.location.pathname+`?size=${size}`+`&color=${selected_color}`
+        }
+        function get_correct_price_by_color(){
+          //  console.log(size)
+          //console.log(window.location.pathname)-> product/<slug>
+           // console.log(window.location.pathname+`?size=${size}`)
+    
+           const c=document.getElementsByName('size')
+            let selected_size=''
+            for (var size of c){
+                if (size.checked==true) {
+                    selected_size = size.value;
+                    break;
+                }
+            
+            }
+            console.log(selected_size)
+          const color=event.target.value;
+          window.location.href=window.location.pathname+`?color=${color}`+`&size=${selected_size}`;
+        }
+    
+</script>
+
+   {% endblock %}
+</body>
+</html>

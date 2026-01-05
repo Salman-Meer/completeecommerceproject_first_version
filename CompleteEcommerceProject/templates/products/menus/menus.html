@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %} ">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body>
+    <center>
+    <div class="home__btns" style="display: inline;">
+        <a href="{% url 'manipulation' %}" class="button button--gray button--small">
+            list products
+        </a>
+    </div>
+    
+    <div class="home__btns" style="display: inline;">
+        <a href="{% url 'add_products' %}" class="button button--gray button--small">
+            add products
+        </a>
+    </div><div class="home__btns" style="display: inline;">
+        <a href="#" class="button button--gray button--small">
+            list parent categories
+        </a>
+    </div>
+
+    <div class="home__btns" style="display: inline;">
+        <a href="#" class="button button--gray button--small">
+            list child categories
+        </a>
+    </div>
+
+    
+
+</center>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+       
+    .symbols {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px; /* Space between the plus and minus */
+        margin-top: 10px;
+      }
+      
+      .plus, .minus {
+        width: 25px;
+        height: 5px;
+        background-color: #4CAF50; /* Initial green color */
+        border-radius: 5px; /* Rounded edges */
+        position: relative;
+        transition: background-color 0.3s ease; /* Smooth hover effect */
+      }
+      
+      /* Plus vertical bar */
+      .plus::before {
+        content: "";
+        position: absolute;
+        width: 5px;
+        height: 25px;
+        background-color: #4CAF50;
+        top: -10px;
+        left: 10px;
+        border-radius: 2.5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      /* Hover effects */
+      .plus:hover, .plus:hover::before {
+        background-color: #FF5722; /* Orange on hover */
+        cursor: pointer;
+      }
+      
+      .minus:hover {
+        background-color: #FF5722; /* Orange on hover */
+        cursor: pointer;
+      }
+
+      #quantity{
+        color: rgb(50, 68, 68);
+        font-size: 20px;
+        font-weight: bold;
+      }
+</style>      
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="symbols">
+        <div class="minus" id="minus{{product.c_id}}"></div>
+        <p id="quantity{{product.c_id}}">{{product.quantity}}</p>
+        
+        <input type="hidden" name="quantity{{product.c_id}}" value="{{product.quantity}}" id="quantity_in_inputbox{{product.c_id}}">
+        <div class="plus" id="plus{{product.c_id}}"></div>
+    </div> 
+</body>
+</html>
+<script>
+    
+        
+        var quantity{{product.c_id}}=document.getElementById("quantity_in_inputbox{{product.c_id}}").value;
+
+        document.getElementById("quantity{{product.c_id}}").innerText = `${quantity{{product.c_id}}}`; 
+  
+    document.getElementById("plus{{product.c_id}}").addEventListener("click", function () {
+   // Increment the variable
+   // Print the updated value to the console
+   quantity{{product.c_id}}++
+  document.getElementById("quantity{{product.c_id}}").innerText = `${quantity{{product.c_id}}}`; // Update the div content
+  document.getElementById("quantity_in_inputbox{{product.c_id}}").value = quantity{{product.c_id}};
+  
+});
+
+document.getElementById("minus{{product.c_id}}").addEventListener("click", function () {
+   // Increment the variable
+   if(quantity{{product.c_id}}>1){
+   quantity{{product.c_id}}--;
+  console.log(quantity{{product.c_id}}); // Print the updated value to the console
+  
+  document.getElementById("quantity{{product.c_id}}").innerText = `${quantity{{product.c_id}}}`; // Update the div content
+  
+  document.getElementById("quantity_in_inputbox{{product.c_id}}").value = quantity{{product.c_id}};
+   }
+});
+</script>
+  

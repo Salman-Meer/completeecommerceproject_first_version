@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+    {% if product.quantity > 1 %}
+    <button class="minusbutton" name="{{product.c_id}}" id="buttonminus-{{product.c_id}}">&minus;</button>
+    {% endif %}
+    {% if product.quantity == 1 %}
+    &ThickSpace;&ThickSpace;&ThickSpace;&ThickSpace;&ThickSpace;&ThickSpace;&ThickSpace;
+    {% endif %}
+    &ThickSpace;
+    <span style="font-size: 30px; font-weight: bold; color: #666;">{{product.quantity}}</span>
+    <input type="hidden" value="{{product.c_id}}" id="input-{{product.c_id}}" >
+    &ThickSpace;
+    <button class="plusbutton" name="{{product.c_id}}" id="buttonplus-{{product.c_id}}">&plus;</button>    
+</body>
+<script>
+        
+
+    document.getElementById('buttonplus-{{product.c_id}}').addEventListener('click',(event)=>
+{
+    
+console.log(document.getElementById('buttonplus-{{product.c_id}}').name +'plus');
+
+window.location.href=window.location.pathname+`?increaseQuantity=${document.getElementById('buttonplus-{{product.c_id}}').name}`;
+//window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`;
+
+});
+document.getElementById('buttonminus-{{product.c_id}}').addEventListener('click',(event)=>
+{
+
+console.log(document.getElementById('buttonplus-{{product.c_id}}').name +'minus');
+window.location.href=window.location.pathname+`?decreaseQuantity=${document.getElementById('buttonplus-{{product.c_id}}').name}`;
+
+//window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`+`&slectedPcategoryId=${value}`;
+//window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`;
+
+});
+</script>
+
+
+</html>
+

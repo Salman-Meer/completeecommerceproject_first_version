@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+</head>
+<body>
+    {% extends "base/base.html" %}
+    {% block start %}
+<hr><hr>
+    {% include 'products/menus/menus.html' %}
+    {% if messages %}
+            <div>
+                {% include 'base/alert.html' %}
+            </div>
+      {% endif %}
+      <!--==================== NEW ====================-->
+      <hr><hr>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-6" style="background-color:rgb(249, 242, 232)">
+            <div class="row">
+              <div class="col-6">
+                Select Parent Category
+              </div>
+              <div class="col-6">
+
+                <select class="form-select form-select-lg mb-3" id="p_ctgry" aria-label=".form-select-lg example">
+                  <option value="-1">Open this and select a parent category</option>
+                  {% for p in parent_categories %}
+                  <option {% if p_category_id %} {% if p.p_c_id is p_category_id %}selected{% endif %}{% endif %} value="{{p.p_c_id}}">{{p.p_c_name}}</option>
+                  {% endfor %}
+                </select>
+                
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-6" style="background-color:rgb(255, 255, 226)">
+            <div class="row">
+              <div class="col-6">
+                Select Child Category
+              </div>
+              <div class="col-6">
+               
+                
+                <select class="form-select form-select-sm" id="c_ctgry"  aria-label=".form-select-sm example">
+                  <option>Open this select menu</option>
+                  {% for c in child_categories %}
+                  <option {% if c_category_id %} {% if c.c_c_id is c_category_id %}selected{% endif %}{% endif %}  value="{{c.c_c_id}}">{{c.c_c_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <hr><hr>
+      <section class="new section container" id="new">
+      <table class="table table-dark table-sm" border="2">
+          <thead>
+            
+          <tr>
+            <td>
+              <b>
+                product id
+              </b>
+            </td>
+            <td>
+
+              <b>product name</b>
+            </td>
+            <td>
+              <b>product price</b>
+            </td>
+            <td>
+              <b>product compony</b>
+            </td>
+            <td><b>is sale</b></td>
+            <td><b>product description</b></td>
+            <td><b>product child categories</b></td>
+            <td><b>for gender</b></td>
+            <td><b>slug</b></td>
+            <td><b>sizes</b></td>
+            <td><b>colors</b></td>
+            <td><b>product image</b></td>
+            <td><b>image menipulations</b></td>
+            <td><b>UPDATE</b></td>
+            <td><b>DELETE</b></td>
+          </tr>
+        
+        </thead>
+
+        <tbody>
+
+        {% for product in products %}
+
+          <tr>
+            <td>
+              {{product.p_id}}
+            </td>
+            <td>
+              {{product.p_name}}
+            </td>
+            <td>
+              {{product.p_price}}
+            </td>
+            
+            <td>
+              {{product.p_compony}}
+            </td>
+            
+            <td>
+              NO
+            </td>
+            
+            <td>
+            <a href="" title="click for more read">
+            {{product.p_description|slice:":40"}}
+            ......
+            </a>
+            </td>
+            <td>
+            {{product.p_child_category.c_c_name}}
+            </td>
+          
+          
+          <td>
+              
+           {% if product.p_gender_id == 1 %}
+           for male
+           {% elif product.p_gender_id == 2 %}
+           for female
+           {% elif product.p_gender_id == 3 %}
+           for others
+           {% endif %}
+          </td>
+          
+          <td>
+              
+            {{product.slug}}
+          </td>
+          <td>
+              
+            
+            {% for size in product.size_variant.all %}
+                    {{ size.size_name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+          </td>
+          <td>
+              
+            {% for color in product.color_variant.all %}
+                    {{ color.color_name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+          </td>
+          <td>
+            <img src="/media/images/{{product.p_image.first.image}}"  alt="">
+          </td>
+          <td>
+            <a href="{% url 'images' product.slug %}">
+          <button class="btn btn-secondary">images</button>
+        </a>
+          </td>
+          <td>
+            <a href="{% url 'delete_products' product.slug %}">
+              <button class="btn btn-danger">delete</button>
+            </a>
+          </td>
+          <td><a href="{% url 'update_product' product.slug %}"><button class="btn btn-primary">update</button></a></td>
+        </tr>
+         {% endfor %}
+        </tbody>
+        </table>
+    </section>
+    <div style=" height: 20px;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <center>
+                  {% if p_category_id and not c_category_id%}
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                     
+                      
+                        {% if products.has_previous %}
+                    
+                      <li class="page-item"><a class="page-link" href="?page=1&slectedPcategoryId={{p_category_id}}" style=" width: 100px; height: 50px;">first</a></li>
+                      <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}&slectedPcategoryId={{p_category_id}}" style=" width: 100px; height: 50px;">Previous</a></li>
+                      {% endif %}
+                      {%for n in totalPagelist %}
+                      {% if page_number is n %}
+                      <li class="page-item"><a class="page-link" href="?page={{n}}&slectedPcategoryId={{p_category_id}}" style=" background-color: rgb(13, 13, 146); max-width: 50px; height: 50px;">{{n}}</a></li>
+                 {% else %}
+                      <li class="page-item"><a class="page-link" href="?page={{n}}&slectedPcategoryId={{p_category_id}}" style=" max-width: 50px; height: 50px;">{{n}}</a></li>
+                      {% endif %}
+                
+                
+                {% endfor %}
+                   
+                    
+                      {% if products.has_next %}
+                    
+                      <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}&slectedPcategoryId={{p_category_id}}" style=" width: 100px; height: 50px;">Next</a></li>
+                      <li class="page-item"><a class="page-link" href="?page={{lastpage}}&slectedPcategoryId={{p_category_id}}" style=" width: 100px; height: 50px;">last</a></li>
+                    
+                      {% endif %}
+                    </ul>
+                  </nav>
+                
+
+                  {% elif p_category_id and c_category_id%}
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                     
+                      
+                        {% if products.has_previous %}
+                    
+                      <li class="page-item"><a class="page-link" href="?page=1&?slectedPcategoryId={{p_category_id}}&slectedCcategoryId={{c_category_id}}" style=" width: 100px; height: 50px;">first</a></li>
+                      <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}&slectedPcategoryId={{p_category_id}}&?slectedCcategoryId={{c_category_id}}" style=" width: 100px; height: 50px;">Previous</a></li>
+                      {% endif %}
+                      {%for n in totalPagelist %}
+                      {% if page_number is n %}
+                      <li class="page-item"><a class="page-link" href="?page={{n}}&slectedPcategoryId={{p_category_id}}&slectedCcategoryId={{c_category_id}}" style=" background-color: rgb(14, 14, 115); max-width: 50px; height: 50px;">{{n}}</a></li>
+                      {% else %}
+                           <li class="page-item"><a class="page-link" href="?page={{n}}&slectedPcategoryId={{p_category_id}}&slectedCcategoryId={{c_category_id}}" style=" max-width: 50px; height: 50px;">{{n}}</a></li>
+                           {% endif %}
+                
+                {% endfor %}
+                   
+                    
+                      {% if products.has_next %}
+                    
+                      <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}&slectedPcategoryId={{p_category_id}}&slectedCcategoryId={{c_category_id}}" style=" width: 100px; height: 50px;">Next</a></li>
+                      <li class="page-item"><a class="page-link" href="?page={{lastpage}}&slectedPcategoryId={{p_category_id}}&slectedCcategoryId={{c_category_id}}" style=" width: 100px; height: 50px;">last</a></li>
+                    
+                      {% endif %}
+                    </ul>
+                  </nav>
+                
+                  {% else %}
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                     
+                      
+                        {% if products.has_previous %}
+                    
+                      <li class="page-item"><a class="page-link" href="?page=1" style=" width: 100px; height: 50px;">first</a></li>
+                      <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}" style=" width: 100px; height: 50px;">Previous</a></li>
+                      {% endif %}
+                      {%for n in totalPagelist %}
+                      {% if page_number is n %}
+                 <li class="page-item"><a class="page-link" href="?page={{n}}" style=" background-color: rgb(7, 7, 115); max-width: 50px; height: 50px;">{{n}}</a></li>
+                      {% else %}
+                       <li class="page-item"><a class="page-link" href="?page={{n}}" style=" max-width: 50px; height: 50px;">{{n}}</a></li>
+                 {% endif %}
+                {% endfor %}
+                   
+                    
+                      {% if products.has_next %}
+                    
+                      <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}" style=" width: 100px; height: 50px;">Next</a></li>
+                      <li class="page-item"><a class="page-link" href="?page={{lastpage}}" style=" width: 100px; height: 50px;">last</a></li>
+                    
+                      {% endif %}
+                    </ul>
+                  </nav>
+                
+                  {% endif %}
+                </center>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+
+<script>
+  const parentCategory=document.getElementById('p_ctgry');
+parentCategory.addEventListener('change',(event)=>
+{
+const selectedCategory=event.target.value;
+
+window.location.href=window.location.pathname+`?slectedPcategoryId=${selectedCategory}`;
+
+});
+
+
+
+const childCategory=document.getElementById('c_ctgry');
+childCategory.addEventListener('change',(event)=>
+{
+const selectedCategory=event.target.value;
+
+const childCategory=document.getElementById('p_ctgry');
+value=childCategory.value;
+console.log(value)
+window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`+`&slectedPcategoryId=${value}`;
+//window.location.href=window.location.pathname+`?slectedCcategoryId=${selectedCategory}`;
+
+});
+
+
+</script>
+    {% endblock %}
+</body>
+</html>

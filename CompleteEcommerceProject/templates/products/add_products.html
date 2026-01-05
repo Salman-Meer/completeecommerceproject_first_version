@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    {% extends 'base/base.html' %}
+    {% block start %}
+    
+    {% include 'products/menus/menus.html' %}
+    <script>
+        
+        imageBoxId=1;
+    
+    </script>
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                Parent Category:
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+            
+            
+              
+                <select class="form-control" id="p_ctgry"  name="product_parent_category">
+                  
+                    {% for p in parent_categories %}
+                    
+                    <option value="{{p.p_c_id}}" {% if p.p_c_id is slectrId %}selected{% endif %} >{{p.p_c_name}}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+<!---child categories-->
+
+            
+<div class="col-md-6 col-sm-12">
+    Child Category:
+</div>
+
+<div class="col-md-6 col-sm-12">
+    <select  class="form-control" name="product_child"  id="">
+        
+        {% for ch_ctg in child_ctgry %}
+        <option value="{{ch_ctg.c_c_id}}" {%if C_category%} {% if ch_ctg.c_c_id is C_category %}selected{% endif %}{% endif%} >{{ch_ctg.c_c_name}}</option>
+        {% endfor %}
+        
+    </select>
+</div>
+            <br>
+            <div class="col-md-6 col-sm-12">
+                Product Name:
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <input type="text"   {% if product_name %} value="{{product_name}}" {% endif %}  name="product_name" class="form-control">
+            </div>
+            {% if error.product_name %}
+            
+            <div class="col-md-6 col-sm-12">
+            </div>
+            <div class="col-md-6 col-sm-12">
+            <p style="color: red;">{{error.product_name}}</p>
+             </div>
+            {%endif%}
+            <div class="col-md-6 col-sm-12">
+                Price:
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <input type="number"   {% if product_price %} value="{{product_price}}" {% endif %}   name="product_price"  class="form-control">
+            </div>
+            {% if error.price %}
+            <div class="col-md-6 col-sm-12">
+            </div>
+            <div class="col-md-6 col-sm-12">
+            <p style="color: red;">{{error.price}}</p>
+             </div>
+            {%endif%}
+
+            <div class="col-md-6 col-sm-12">
+               Product Compony:
+            </div>
+           
+            <div class="col-md-6 col-sm-12">
+                <input type="text"   {% if product_company %} value="{{product_company}}" {% endif %}   name="product_company"  class="form-control">
+            </div>
+            {% if error.company %}
+            <div class="col-md-6 col-sm-12">
+            </div>
+            <div class="col-md-6 col-sm-12">
+            <p style="color: red;">{{error.company}}</p>
+            </div>
+            {%endif%}
+            
+            <div class="col-md-6 col-sm-12">
+                Description:
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <textarea class="form-control" name="product_description" >  {% if product_description %} {{product_description}} {% endif %}  </textarea>
+            </div>
+
+           
+
+            <div class="col-md-6 col-sm-12">
+                Gender
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <input type="radio" checked="checked"  {% if gender %} {% if gender is 1 %} checked="checked" {% endif %}{% endif %}  value="1" name="Gender"> Male 
+                <input type="radio"  {% if gender %} {% if gender is 2 %} checked="checked" {% endif %}{% endif %}  value="2" name="Gender"> FeMale 
+                <input type="radio"  {% if gender %} {% if gender is 3 %} checked="checked" {% endif %}{% endif %}  value="3" name="Gender"> Others 
+            </div>
+
+            
+            <div class="col-md-6 col-sm-12">
+                Colors :
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <select multiple name="product_colors"  class="form-control" id="">
+                     
+                    {% for c in colors %}<!--outer-->
+                    
+                    {% if c.id in int_colors %}<!--inner-->
+                        
+                    <option value="{{c.id}}" selected>{{c.color_name}}</option>
+                    {% else %}
+                    
+                    <option value="{{c.id}}">{{c.color_name}}</option>
+                    {% endif %}<!--inner-->
+                      {% endfor %}<!--inner-->
+                       
+                    
+
+                </select>
+                {% if error.colors %}
+            <div class="col-md-6 col-sm-12">
+            </div>
+            <div class="col-md-6 col-sm-12">
+            <p style="color: red;">{{error.colors}}</p>
+            </div>
+            {%endif%}
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                Size :
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <select multiple name="product_sizes" class="form-control" id="">
+                    
+                    {% for s in sizes %}
+                  
+                    {% if s.id in int_sizes %}<!--inner-->
+                        
+                    <option value="{{s.id}}" selected>{{s.size_name}}</option>
+                    {% else %}
+                    
+                    <option value="{{s.id}}">{{s.size_name}}</option>
+                    {% endif %}<!--inner-->
+                      {% endfor %}<!--inner-->
+                       
+                    
+
+                </select>
+                {% if error.sizes %}
+            <div class="col-md-6 col-sm-12">
+            </div>
+            <div class="col-md-6 col-sm-12">
+            <p style="color: red;">{{error.sizes}}</p>
+            </div>
+            {%endif%}
+            </div>
+
+            
+            <div class="col-md-6 col-sm-12">
+                images :
+            </div>
+            
+            
+
+            
+            <div class="col-md-6 col-sm-12" id="add_image">
+                <input type="file" name="image" class="form-control" src="" alt="">
+                <br>
+                {% if error.image %}
+            
+                <p style="color: red;">{{error.image}}</p>
+            
+            {%endif%}
+            {% if error.images_empty %}
+            
+            <p style="color: red;">{{error.images_empty }}</p>
+        
+        {%endif%}
+            </div>
+
+           
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6"></div>
+                <input type="submit" class="btn btn-success" style="width: 100%;" value="Save">
+            </div>
+        </div>
+        <hr>
+        <hr>
+        </div>
+
+
+        </div>
+
+
+
+    </div>
+    </form>
+    
+    <center><button class="btn btn-outline-primary" id="add_image_field">add image</button>  
+        <button class="btn btn-outline-warning" id="remove_image_field">remove image field</button></center>
+   
+    <script>
+       
+
+document.getElementById('add_image_field').addEventListener("click",()=>{
+
+let box=document.createElement('input');
+box.type='file';
+box.name='image';
+box.classList.add('form-control');
+
+box.id='id'+imageBoxId;
+imageBoxId=imageBoxId+1;
+const divv = document.getElementById('add_image');
+divv.appendChild(box);
+ 
+
+});
+document.getElementById('remove_image_field').addEventListener("click",()=>{
+    
+    imageBoxId=imageBoxId-1;
+    Image_field=document.getElementById('id'+imageBoxId);
+    Image_field.remove();
+    
+    });
+
+
+const parentCategory=document.getElementById('p_ctgry');
+parentCategory.addEventListener('change',(event)=>
+{
+const selectedCategory=event.target.value;
+
+window.location.href=window.location.pathname+`?slectedcategoryId=${selectedCategory}`;
+
+});
+
+</script>
+    {% endblock %}
+
+  
+</body>
+</html>

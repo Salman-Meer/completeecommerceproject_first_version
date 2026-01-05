@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    {% extends 'base/base.html' %}
+    {% block start %}
+    
+    {% include 'products/menus/menus.html' %}
+    {% if messages %}
+    <div>
+        {% include 'base/alert.html' %}
+    </div>
+{% endif %}
+    <script>
+        
+        imageBoxId=1;
+    
+    </script>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+
+                <center>
+                    <table class="table table-dark">
+                        <thead>
+                          <tr>
+                            <th scope="col">picture id</th>
+                            <th scope="col">picture</th>
+                            <th scope="col">delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            
+                            {% for images in products.p_image.all %}
+                          <tr>
+                            <td>{{images.i_id}}</td>
+                            <td> 
+                                <img src="/media/images/{{images.image}}" style=" width: 100px;" alt="" class="home__img">
+                            </td>
+                            <td>
+                                <a href="{% url 'delete_images' images.i_id %}">
+                                <button class=" btn btn-outline-danger">delete</button>
+                                </a>
+                            
+                            </td>
+                
+                          </tr>
+                        </tbody>
+                        
+                        {% endfor %}
+                      </table>
+                    </center>
+            </div>
+            
+            <div class="col-md-6 col-sm-12">
+                <br>
+                <br>
+                <center>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        
+                {% csrf_token %}
+                    <div  id="add_image">
+                        
+                    <input type="hidden" name="slug" value="{{products.slug}}">
+                    <input type="file" name="image" class="form-control" required src="" alt="">
+                    <br>
+                    {% if error.image %}
+                
+                    <p style="color: red;">{{error.image}}</p>
+                
+                {%endif%}
+                </div>
+                <br>
+                <button type="submit" class=" btn btn-outline-success">upload images</button>
+                
+            </form>
+                <br>
+                <br>
+
+                <button class="btn btn-outline-primary" id="add_image_field">add image field</button>  
+                <button class="btn btn-outline-warning" id="remove_image_field">remove image field</button></center>
+               
+               
+            </div>
+        </div>
+    </div>
+
+                <script>
+                   
+            
+            document.getElementById('add_image_field').addEventListener("click",()=>{
+            
+            let box=document.createElement('input');
+            box.type='file';
+            box.name='image';
+            box.classList.add('form-control');
+            
+            box.id='id'+imageBoxId;
+            imageBoxId=imageBoxId+1;
+            const divv = document.getElementById('add_image');
+            divv.appendChild(box);
+             
+            
+            });
+            document.getElementById('remove_image_field').addEventListener("click",()=>{
+                
+                imageBoxId=imageBoxId-1;
+                Image_field=document.getElementById('id'+imageBoxId);
+                Image_field.remove();
+                
+                });
+            
+            
+            
+            </script>
+                                
+    {% endblock %}
+
+    </body>
+    </html>

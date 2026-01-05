@@ -1,0 +1,16 @@
+<html>
+    <center>
+        <h1>{{user.first_name}}</h1>
+        <h1>{{user.id}}</h1>
+        <h1>{{user.username}}</h1>
+        <hr><hr><hr>
+        {% if request.COOKIES.user %}
+       <h1> cookie = {{request.COOKIES.user}}</h1>
+        {% else %}
+        <h1>sory cookie is not set</h1>
+        {% endif %}
+        {% if request.COOKIES.search %} 
+        <h1>{{request.COOKIES.search}} </h1>
+            {% endif %} 
+    </center>
+</html>
