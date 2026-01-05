@@ -65,17 +65,7 @@ LOGIN_REDIRECT_URL = '/home/' # Redirect after login
 ACCOUNT_EMAIL_VERIFICATION = "none"  # Disable email verification for testing
 
 # # Configure Google Provider
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-         'APP':{
-        'client_id':'451567744212-qn1gv1akvgmmgp5hmkn64o10k2nk60qg.apps.googleusercontent.com',
-        'secret':'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',
-    },
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-        'METHOD':'0auth2',
-        'VERIFIED EMAIL':True
-    },
+
    
 
 'github': {
