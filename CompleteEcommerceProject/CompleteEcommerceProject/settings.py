@@ -180,4 +180,4 @@ EMAIL_HOST_PASSWORD = ""  # Use an App Password instead of your actual password
 WHATSAPP_API_KEY = 'your-api-key'
 WHATSAPP_ACCOUNT_SID = 'your-account-sid'
 WHATSAPP_AUTH_TOKEN = 'your-auth-token'
-WHATSAPP_NUMBER = 'whatsapp:+923555682180'  # Twilio's sandbox number
+ # Twilio's sandbox number
